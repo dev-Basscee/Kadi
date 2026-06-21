@@ -4,6 +4,8 @@ import { Match } from '@/lib/mockData';
 import { X } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/ui/button';
+import { AIAnalysisExplainer } from '@/components/AIAnalysisExplainer';
+import { InjuryLineupUpdates } from '@/components/InjuryLineupUpdates';
 import { format } from 'date-fns';
 
 interface DeepDiveModalProps {
@@ -136,33 +138,16 @@ export function DeepDiveModal({ match, onClose }: DeepDiveModalProps) {
             </div>
           </div>
 
-          {/* AI Analysis */}
+          {/* Injury & Lineup Updates */}
           <div>
-            <h3 className="text-lg font-bold text-foreground mb-4">AI Analysis</h3>
-            <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 rounded-lg p-6 space-y-3">
-              <p className="text-sm text-foreground leading-relaxed">
-                Our advanced AI model predicts a <span className="text-primary font-bold">
-                  {match.probabilityHome}% probability
-                </span> of {match.homeTeam} victory based on historical performance, recent form, and head-to-head matchups.
-              </p>
-              <p className="text-sm text-foreground leading-relaxed">
-                {match.homeTeam} has maintained strong form with an average rating of{' '}
-                <span className="text-primary font-bold">
-                  {Math.round(match.homeForm.reduce((a, b) => a + b) / match.homeForm.length)}
-                </span>
-                % over the last 5 matches, while {match.awayTeam} shows{' '}
-                <span className="text-secondary font-bold">
-                  {Math.round(match.awayForm.reduce((a, b) => a + b) / match.awayForm.length)}
-                </span>
-                %.
-              </p>
-              <p className="text-sm text-foreground leading-relaxed">
-                The odds of <span className="text-accent font-bold">{match.odds.toFixed(2)}</span> offer value
-                relative to the predicted probability, making this a{' '}
-                <span className="text-primary font-bold">strong play</span> for informed bettors.
-              </p>
+            <h3 className="text-lg font-bold text-foreground mb-4">Player Availability & Lineups</h3>
+            <div className="bg-card/50 border border-primary/20 rounded-lg p-6">
+              <InjuryLineupUpdates matchId={match.id} />
             </div>
           </div>
+
+          {/* AI Analysis Explainer */}
+          <AIAnalysisExplainer match={match} />
 
           {/* Actions */}
           <div className="flex gap-3 pt-4">

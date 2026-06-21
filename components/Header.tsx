@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, Calendar, LogIn, Menu, X, BarChart3 } from 'lucide-react';
+import { ChevronDown, Calendar, LogIn, Menu, X, BarChart3, TrendingUp, Zap, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { NotificationCenter } from '@/components/NotificationCenter';
 import { sportsOptions } from '@/lib/mockData';
@@ -72,6 +72,34 @@ export function Header({ selectedSport, onSportChange }: HeaderProps) {
               <span className="text-sm font-medium text-foreground">Today</span>
             </div>
             <NotificationCenter />
+
+            {/* Premium Features Dropdown */}
+            <div className="hidden sm:block relative group">
+              <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary/10 to-secondary/10 hover:from-primary/20 hover:to-secondary/20 text-primary border border-primary/30 transition-all text-sm font-medium">
+                <Zap size={16} />
+                <span>Tools</span>
+                <ChevronDown size={14} className="group-hover:rotate-180 transition-transform" />
+              </button>
+              <div className="absolute right-0 mt-2 w-48 bg-card border border-primary/30 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <Link href="/stats" className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-primary/10 rounded-t-lg transition-colors">
+                  <TrendingUp size={16} className="text-primary" />
+                  Advanced Stats
+                </Link>
+                <Link href="/odds" className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-primary/10 transition-colors">
+                  <BarChart3 size={16} className="text-secondary" />
+                  Odds Comparison
+                </Link>
+                <Link href="/bankroll" className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-primary/10 transition-colors">
+                  <Zap size={16} className="text-accent" />
+                  Bankroll Manager
+                </Link>
+                <Link href="/community" className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-primary/10 rounded-b-lg transition-colors">
+                  <Users size={16} className="text-primary" />
+                  Community
+                </Link>
+              </div>
+            </div>
+
             <Link
               href="/history"
               className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/10 hover:bg-accent/20 text-accent border border-accent/30 transition-colors text-sm font-medium"
