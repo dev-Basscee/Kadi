@@ -1,8 +1,9 @@
 'use client';
 
 import { Match } from '@/lib/mockData';
-import { X, Share2, Trash2, TrendingUp } from 'lucide-react';
+import { X, Trash2, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ExportShare } from '@/components/ExportShare';
 
 interface SlipConstructorProps {
   selectedMatches: Match[];
@@ -93,13 +94,7 @@ export function SlipConstructor({
           </div>
         </div>
 
-        <Button
-          onClick={onShare}
-          className="w-full bg-gradient-to-r from-primary to-secondary text-background hover:from-primary/90 hover:to-secondary/90 font-semibold gap-2"
-        >
-          <Share2 size={16} />
-          Share Watchlist
-        </Button>
+        <ExportShare matches={selectedMatches} title="Share Watchlist" />
 
         <Button
           variant="outline"

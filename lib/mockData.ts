@@ -26,7 +26,86 @@ export type Match = {
     awayWins: number;
     draws: number;
   };
+  status?: 'upcoming' | 'live' | 'finished';
+  homeScore?: number;
+  awayScore?: number;
+  minute?: number;
+  league?: string;
 };
+
+export type BetRecord = {
+  id: string;
+  matchId: string;
+  homeTeam: string;
+  awayTeam: string;
+  prediction: string;
+  odds: number;
+  stakeAmount: number;
+  result: 'win' | 'loss' | 'pending';
+  returnAmount?: number;
+  profit?: number;
+  placedDate: Date;
+  matchDate: Date;
+};
+
+export const mockBettingHistory: BetRecord[] = [
+  {
+    id: 'bet-1',
+    matchId: '1',
+    homeTeam: 'Manchester United',
+    awayTeam: 'Liverpool',
+    prediction: 'Manchester United Win',
+    odds: 1.85,
+    stakeAmount: 100,
+    result: 'win',
+    returnAmount: 185,
+    profit: 85,
+    placedDate: new Date(2026, 5, 20),
+    matchDate: new Date(2026, 5, 21),
+  },
+  {
+    id: 'bet-2',
+    matchId: '3',
+    homeTeam: 'Manchester City',
+    awayTeam: 'Tottenham',
+    prediction: 'Manchester City Win',
+    odds: 1.45,
+    stakeAmount: 200,
+    result: 'win',
+    returnAmount: 290,
+    profit: 90,
+    placedDate: new Date(2026, 5, 20),
+    matchDate: new Date(2026, 5, 21),
+  },
+  {
+    id: 'bet-3',
+    matchId: '5',
+    homeTeam: 'Aston Villa',
+    awayTeam: 'West Ham',
+    prediction: 'Aston Villa Win',
+    odds: 2.75,
+    stakeAmount: 150,
+    result: 'loss',
+    returnAmount: 0,
+    profit: -150,
+    placedDate: new Date(2026, 5, 19),
+    matchDate: new Date(2026, 5, 20),
+  },
+  {
+    id: 'bet-4',
+    matchId: '7',
+    homeTeam: 'Real Madrid',
+    awayTeam: 'Barcelona',
+    prediction: 'Draw',
+    odds: 2.95,
+    stakeAmount: 100,
+    result: 'win',
+    returnAmount: 295,
+    profit: 195,
+    placedDate: new Date(2026, 5, 18),
+    matchDate: new Date(2026, 5, 19),
+  },
+];
 
 export const mockMatches: Match[] = [
   {
@@ -44,6 +123,11 @@ export const mockMatches: Match[] = [
     homeForm: [75, 68, 82, 71, 79],
     awayForm: [88, 92, 85, 89, 81],
     h2hStats: { homeWins: 12, awayWins: 14, draws: 8 },
+    status: 'live',
+    homeScore: 2,
+    awayScore: 1,
+    minute: 67,
+    league: 'Premier League',
   },
   {
     id: '2',
@@ -60,6 +144,8 @@ export const mockMatches: Match[] = [
     homeForm: [76, 80, 74, 77, 82],
     awayForm: [72, 68, 75, 70, 73],
     h2hStats: { homeWins: 18, awayWins: 16, draws: 10 },
+    status: 'upcoming',
+    league: 'Premier League',
   },
   {
     id: '3',
@@ -77,6 +163,10 @@ export const mockMatches: Match[] = [
     homeForm: [95, 92, 88, 94, 89],
     awayForm: [65, 70, 62, 68, 75],
     h2hStats: { homeWins: 22, awayWins: 8, draws: 6 },
+    status: 'finished',
+    homeScore: 3,
+    awayScore: 0,
+    league: 'Premier League',
   },
   {
     id: '4',

@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, Calendar, LogIn, Menu, X } from 'lucide-react';
+import Link from 'next/link';
+import { ChevronDown, Calendar, LogIn, Menu, X, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { NotificationCenter } from '@/components/NotificationCenter';
 import { sportsOptions } from '@/lib/mockData';
 
 interface HeaderProps {
@@ -69,6 +71,14 @@ export function Header({ selectedSport, onSportChange }: HeaderProps) {
               <Calendar size={16} className="text-secondary" />
               <span className="text-sm font-medium text-foreground">Today</span>
             </div>
+            <NotificationCenter />
+            <Link
+              href="/history"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent/10 hover:bg-accent/20 text-accent border border-accent/30 transition-colors text-sm font-medium"
+            >
+              <BarChart3 size={16} />
+              <span>History</span>
+            </Link>
             <Button
               size="sm"
               className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2 hidden sm:inline-flex"

@@ -6,6 +6,7 @@ import { MatchCard } from '@/components/MatchCard';
 import { DeepDiveModal } from '@/components/DeepDiveModal';
 import { SlipConstructor } from '@/components/SlipConstructor';
 import { AdBanner } from '@/components/AdBanner';
+import { LiveScoreTicker } from '@/components/LiveScoreTicker';
 import { mockMatches, Match } from '@/lib/mockData';
 
 export default function Home() {
@@ -49,6 +50,8 @@ export default function Home() {
       <AdBanner position="top" />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {/* Live Score Ticker */}
+        <LiveScoreTicker matches={mockMatches} />
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
