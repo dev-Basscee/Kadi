@@ -10,6 +10,7 @@ import { InjuryLineupUpdates } from '@/components/InjuryLineupUpdates';
 import { MarketTabs } from '@/components/MarketTabs';
 import { ContextualAnalyticsPanel } from '@/components/ContextualAnalyticsPanel';
 import { format } from 'date-fns';
+import { useDeepDive } from '@/lib/api';
 
 interface DeepDiveModalProps {
   match: Match | null;
@@ -19,6 +20,8 @@ interface DeepDiveModalProps {
 export function DeepDiveModal({ match, onClose }: DeepDiveModalProps) {
   const [showWatchlist, setShowWatchlist] = useState(false);
   
+  const { data: deepDiveData, isLoading } = useDeepDive(match?.id);
+
   if (!match) return null;
 
   const probData = [
@@ -164,8 +167,15 @@ export function DeepDiveModal({ match, onClose }: DeepDiveModalProps) {
           <div className="space-y-6">
             <ContextualAnalyticsPanel match={match} />
 
-            {/* AI Analysis Explainer */}
-            <AIAnalysisExplainer match={match} />
+            {/* AI Analysis Explainer powered by Gemini */}
+            {isLoading ? (
+              <div className="bg-card/50 border border-primary/20 rounded-lg p-6 flex flex-col items-center justify-center space-y-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                <p className="text-sm text-muted-foreground">Gemini AI is analyzing the match...</p>
+              </div>
+            ) : (
+              <AIAnalysisExplainer match={match} analysis={deepDiveData?.analysis} />
+            )}
 
             {/* Actions */}
             <div className="flex gap-3 pt-4 sticky bottom-0 bg-card">
