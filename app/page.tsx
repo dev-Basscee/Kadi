@@ -48,23 +48,23 @@ export default function Home() {
       {/* Top Ad Banner */}
       <AdBanner position="top" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <main className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8">
         {/* Live Score Ticker */}
         <LiveScoreTicker matches={mockMatches} />
         
-        <div className="space-y-6">
+        <div className="space-y-6 sm:space-y-8">
             {/* Section Title */}
-            <div className="mb-8">
-              <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+            <div className="mb-6 sm:mb-8">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
                 Today&apos;s Predictions
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-sm sm:text-base text-muted-foreground">
                 {filteredMatches.length} matches with AI-powered predictions
               </p>
             </div>
 
-          {/* Matches Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Matches Grid - Responsive across all screen sizes */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {filteredMatches.map((match, index) => (
                 <div key={match.id}>
                   {/* Inline Ad after every 5 matches */}
@@ -81,11 +81,11 @@ export default function Home() {
 
             {/* Empty State */}
             {filteredMatches.length === 0 && (
-              <div className="bg-card border border-primary/20 rounded-xl p-12 text-center">
-                <p className="text-lg text-muted-foreground font-medium">
+              <div className="bg-card border border-primary/20 rounded-lg sm:rounded-xl p-8 sm:p-12 text-center">
+                <p className="text-base sm:text-lg text-muted-foreground font-medium">
                   No matches found for the selected sport
                 </p>
-                <p className="text-sm text-muted-foreground mt-2">
+                <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                   Try selecting a different sport from the header menu
                 </p>
               </div>

@@ -33,28 +33,29 @@ export function DeepDiveModal({ match, onClose }: DeepDiveModalProps) {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-card border border-primary/30 rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+      <div className="bg-card border border-primary/30 rounded-lg sm:rounded-2xl w-full h-[90vh] sm:h-auto sm:max-w-2xl md:max-w-4xl lg:max-w-6xl md:max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-primary/20 bg-gradient-to-r from-background to-background/50 flex-shrink-0">
-          <div>
-            <h2 className="text-2xl font-bold text-foreground mb-1">Match Analysis</h2>
-            <p className="text-sm text-muted-foreground">
+        <div className="flex items-center justify-between gap-2 p-3 sm:p-4 md:p-6 border-b border-primary/20 bg-gradient-to-r from-background to-background/50 flex-shrink-0">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-lg sm:text-2xl font-bold text-foreground mb-0.5 truncate">Match Analysis</h2>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">
               {match.homeTeam} vs {match.awayTeam} • {format(match.date, 'MMM d')} at {match.time}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-primary/20 rounded-lg transition-colors flex-shrink-0"
+            className="p-1.5 sm:p-2 hover:bg-primary/20 rounded-lg transition-colors flex-shrink-0"
+            aria-label="Close modal"
           >
-            <X size={24} className="text-foreground" />
+            <X size={20} className="text-foreground sm:w-6 sm:h-6" />
           </button>
         </div>
 
         {/* 3-Panel Layout */}
-        <div className="flex-1 overflow-y-auto grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-6 p-6">
+        <div className="flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 md:gap-4 lg:gap-6 p-3 sm:p-4 md:p-6">
           {/* LEFT PANEL - Match Overview & Form */}
-          <div className="space-y-6 pb-6 lg:pb-0 lg:border-r border-primary/20 lg:pr-6">
+          <div className="space-y-4 md:space-y-6 pb-6 md:pb-0 md:border-r border-primary/20 md:pr-4 lg:pr-6">
             {/* Teams */}
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-card/50 border border-primary/20 rounded-lg p-3 text-center">
