@@ -25,7 +25,10 @@ export function MatchCard({ match, onClick, isPremium }: MatchCardProps) {
   return (
     <div
       onClick={onClick}
-      className={`relative group cursor-pointer bg-gradient-to-br from-card to-card/50 border border-primary/20 rounded-xl p-4 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/20 ${
+      role="button"
+      tabIndex={0}
+      onKeyPress={(e) => e.key === 'Enter' && onClick()}
+      className={`relative group cursor-pointer bg-gradient-to-br from-card to-card/50 border border-primary/20 rounded-lg sm:rounded-xl p-3 sm:p-4 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/20 active:scale-95 sm:active:scale-100 ${
         isBlurred ? 'blur-sm' : ''
       }`}
     >
@@ -41,55 +44,55 @@ export function MatchCard({ match, onClick, isPremium }: MatchCardProps) {
       )}
 
       {/* Top Row - Date/Time & Odds */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono text-muted-foreground">
+      <div className="flex items-center justify-between gap-2 mb-3">
+        <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+          <span className="font-mono text-muted-foreground">
             {format(match.date, 'MMM dd')}
           </span>
-          <span className="text-xs font-mono text-secondary font-semibold">{match.time}</span>
+          <span className="font-mono text-secondary font-semibold">{match.time}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <TrendingUp size={14} className="text-accent" />
-          <span className="text-sm font-bold text-accent">{match.odds.toFixed(2)}</span>
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <TrendingUp size={12} className="text-accent sm:w-4 sm:h-4" />
+          <span className="text-xs sm:text-sm font-bold text-accent">{match.odds.toFixed(2)}</span>
         </div>
       </div>
 
       {/* Teams */}
       <div className="space-y-2 mb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 flex-1">
-            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
               <span className="text-xs font-bold text-primary">
                 {match.homeTeam.charAt(0)}
               </span>
             </div>
-            <span className="text-sm font-semibold text-foreground truncate">
+            <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
               {match.homeTeam}
             </span>
           </div>
-          <span className="text-xs text-muted-foreground ml-2">HOME</span>
+          <span className="text-xs text-muted-foreground flex-shrink-0">H</span>
         </div>
         <div className="border-b border-primary/10" />
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 flex-1">
-            <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary/20 flex items-center justify-center flex-shrink-0">
               <span className="text-xs font-bold text-secondary">
                 {match.awayTeam.charAt(0)}
               </span>
             </div>
-            <span className="text-sm font-semibold text-foreground truncate">
+            <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
               {match.awayTeam}
             </span>
           </div>
-          <span className="text-xs text-muted-foreground ml-2">AWAY</span>
+          <span className="text-xs text-muted-foreground flex-shrink-0">A</span>
         </div>
       </div>
 
       {/* Prediction Badge */}
       <div
-        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg ${badge.bg} border border-primary/30`}
+        className={`inline-flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg ${badge.bg} border border-primary/30`}
       >
-        <div className="w-2 h-2 rounded-full bg-current" />
+        <div className="w-1.5 h-1.5 rounded-full bg-current" />
         <span className={`text-xs font-bold tracking-wider ${badge.text}`}>
           {badge.label}
         </span>
