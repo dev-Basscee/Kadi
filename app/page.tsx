@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react';
 import { Header } from '@/components/Header';
 import { MatchCard } from '@/components/MatchCard';
 import { DeepDiveModal } from '@/components/DeepDiveModal';
-import { SlipConstructor } from '@/components/SlipConstructor';
 import { AdBanner } from '@/components/AdBanner';
 import { LiveScoreTicker } from '@/components/LiveScoreTicker';
 import { mockMatches, Match } from '@/lib/mockData';
@@ -52,9 +51,8 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Live Score Ticker */}
         <LiveScoreTicker matches={mockMatches} />
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-3 space-y-6">
+        
+        <div className="space-y-6">
             {/* Section Title */}
             <div className="mb-8">
               <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
@@ -65,8 +63,8 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Matches Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Matches Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredMatches.map((match, index) => (
                 <div key={match.id}>
                   {/* Inline Ad after every 5 matches */}
@@ -91,42 +89,7 @@ export default function Home() {
                   Try selecting a different sport from the header menu
                 </p>
               </div>
-            )}
-          </div>
-
-          {/* Right Sidebar - Slip Constructor */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-24">
-              <SlipConstructor
-                selectedMatches={watchlistMatches}
-                onRemove={removeFromWatchlist}
-                onShare={handleShare}
-              />
-
-              {/* Additional Info Box */}
-              <div className="mt-6 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-4">
-                <h4 className="text-sm font-bold text-foreground mb-3">How It Works</h4>
-                <ul className="text-xs text-muted-foreground space-y-2">
-                  <li className="flex gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Click any match for deep analysis</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Add predictions to watchlist</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Calculate parlay odds instantly</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Share your watchlist with friends</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </main>
 
