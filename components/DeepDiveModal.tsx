@@ -9,6 +9,7 @@ import { AIAnalysisExplainer } from '@/components/AIAnalysisExplainer';
 import { InjuryLineupUpdates } from '@/components/InjuryLineupUpdates';
 import { MarketTabs } from '@/components/MarketTabs';
 import { ContextualAnalyticsPanel } from '@/components/ContextualAnalyticsPanel';
+import { CryptographicReceipt } from '@/components/CryptographicReceipt';
 import { format } from 'date-fns';
 
 interface DeepDiveModalProps {
@@ -120,6 +121,16 @@ export function DeepDiveModal({ match, onClose }: DeepDiveModalProps) {
                 </ResponsiveContainer>
               </div>
             </div>
+
+            {/* Cryptographic Receipt - For finished matches */}
+            {match.status === 'finished' && (
+              <div className="border-t border-primary/20 pt-6">
+                <CryptographicReceipt 
+                  matchId={match.id} 
+                  matchTitle={`${match.homeTeam} vs ${match.awayTeam}`}
+                />
+              </div>
+            )}
 
             {/* Head to Head */}
             <div>

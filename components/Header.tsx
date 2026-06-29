@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, Calendar, LogIn, Menu, X, BarChart3, TrendingUp, Zap, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { WalletConnectButton } from '@/components/ui/WalletConnectButton';
 import { NotificationCenter } from '@/components/NotificationCenter';
 import { GlobalSearch } from '@/components/GlobalSearch';
 import { sportsOptions } from '@/lib/mockData';
@@ -105,13 +106,8 @@ export function Header({ selectedSport, onSportChange }: HeaderProps) {
               <span>History</span>
             </Link>
 
-            <Button
-              size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2 hidden lg:inline-flex"
-            >
-              <LogIn size={16} />
-              <span>Sign In</span>
-            </Button>
+            {/* Wallet Connect - Replaces traditional Sign In */}
+            <WalletConnectButton />
 
             {/* Mobile Menu Button */}
             <button 

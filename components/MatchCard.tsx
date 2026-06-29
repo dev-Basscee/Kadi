@@ -1,7 +1,7 @@
 'use client';
 
 import { Match } from '@/lib/mockData';
-import { Lock, TrendingUp } from 'lucide-react';
+import { Lock, TrendingUp, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface MatchCardProps {
@@ -52,6 +52,13 @@ export function MatchCard({ match, onClick, isPremium }: MatchCardProps) {
           <span className="font-mono text-secondary font-semibold">{match.time}</span>
         </div>
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          {/* Verified on Solana Badge for finished matches */}
+          {match.status === 'finished' && (
+            <div className="flex items-center gap-0.5 px-2 py-1 rounded-full bg-primary/10 border border-primary/30 group/verified cursor-pointer hover:bg-primary/20 transition-colors">
+              <CheckCircle2 size={12} className="text-primary" />
+              <span className="text-xs font-semibold text-primary hidden sm:inline">Verified</span>
+            </div>
+          )}
           <TrendingUp size={12} className="text-accent sm:w-4 sm:h-4" />
           <span className="text-xs sm:text-sm font-bold text-accent">{match.odds.toFixed(2)}</span>
         </div>
