@@ -52,6 +52,11 @@ export function MatchCard({ match, onClick, isPremium }: MatchCardProps) {
           <span className="font-mono text-secondary font-semibold">{match.time}</span>
         </div>
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          {match.status === 'finished' && (
+            <div className="hidden sm:flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary/20 border border-secondary/30">
+              <span className="text-[10px] font-bold text-secondary">Verified on Solana</span>
+            </div>
+          )}
           <TrendingUp size={12} className="text-accent sm:w-4 sm:h-4" />
           <span className="text-xs sm:text-sm font-bold text-accent">{match.odds.toFixed(2)}</span>
         </div>
