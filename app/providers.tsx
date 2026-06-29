@@ -14,11 +14,10 @@ import { clusterApiUrl } from '@solana/web3.js';
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  // Use useState to ensure a new QueryClient is created per session
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000, // 1 minute
+        staleTime: 60 * 1000,
         refetchOnWindowFocus: false,
       },
     },
@@ -38,14 +37,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <ConnectionProvider endpoint={endpoint}>
+        <WalletProvider wallets={wallets} autoConnect>
+          <WalletModalProvider>
             {children}
-          </QueryClientProvider>
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+          </WalletModalProvider>
+        </WalletProvider>
+      </ConnectionProvider>
+    </QueryClientProvider>
   );
 }

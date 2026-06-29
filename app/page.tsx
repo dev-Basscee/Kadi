@@ -66,7 +66,7 @@ export default function Home() {
             </div>
 
           {/* Matches Grid - Responsive across all screen sizes */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 xs:gap-3 sm:gap-3 md:gap-4 lg:gap-6">
               {filteredMatches.map((match, index) => (
                 <div key={match.id}>
                   {/* Inline Ad after every 5 matches */}
