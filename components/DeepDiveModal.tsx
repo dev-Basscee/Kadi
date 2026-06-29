@@ -25,15 +25,26 @@ export function DeepDiveModal({ match, onClose }: DeepDiveModalProps) {
 
   if (!match) return null;
 
-  const probData = [
+  const analysis = deepDiveData?.analysis;
+
+  // Use AI-generated dynamic probabilities based on TxLINE data if available, else fallback
+  const probData = analysis?.dynamic_probabilities ? [
+    { name: 'Home', value: analysis.dynamic_probabilities.home, fill: '#00ff88' },
+    { name: 'Draw', value: analysis.dynamic_probabilities.draw, fill: '#ffff00' },
+    { name: 'Away', value: analysis.dynamic_probabilities.away, fill: '#ff3366' },
+  ].filter((d) => d.value > 0) : [
     { name: 'Home', value: match.probabilityHome, fill: '#00ff88' },
     { name: 'Draw', value: match.probabilityDraw, fill: '#ffff00' },
     { name: 'Away', value: match.probabilityAway, fill: '#ff3366' },
   ].filter((d) => d.value > 0);
 
-  const formData = [
-    { name: match.homeTeam.split(' ')[0], value: match.homeForm[4] },
-    { name: match.awayTeam.split(' ')[0], value: match.awayForm[4] },
+  // Use AI-generated form comparison based on live match flow if available, else fallback
+  const formData = analysis?.dynamic_form_comparison ? analysis.dynamic_form_comparison.map((d: any) => ({
+    name: d.team_name,
+    value: d.form_score
+  })) : [
+    { name: match.homeTeam.split(' ')[0], value: match.homeForm[4] ?? 0 },
+    { name: match.awayTeam.split(' ')[0], value: match.awayForm[4] ?? 0 },
   ];
 
   return (
