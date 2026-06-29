@@ -1,13 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ChevronDown, Calendar, LogIn, Menu, X, BarChart3, TrendingUp, Zap, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { WalletConnectButton } from '@/components/ui/WalletConnectButton';
 import { NotificationCenter } from '@/components/NotificationCenter';
 import { GlobalSearch } from '@/components/GlobalSearch';
 import { sportsOptions } from '@/lib/mockData';
+
+// Dynamic import for WalletConnectButton to avoid hydration mismatch
+const WalletConnectButton = dynamic(
+  () => import('@/components/ui/WalletConnectButton').then(mod => ({ default: mod.WalletConnectButton })),
+  { ssr: false, loading: () => <div className="w-24 h-10 bg-primary/10 rounded-lg animate-pulse" /> }
+);
 
 interface HeaderProps {
   selectedSport: string;
