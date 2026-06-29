@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { NotificationCenter } from '@/components/NotificationCenter';
 import { GlobalSearch } from '@/components/GlobalSearch';
 import { sportsOptions } from '@/lib/mockData';
+import { WalletConnectButton } from '@/components/ui/WalletConnectButton';
 
 interface HeaderProps {
   selectedSport: string;
@@ -105,13 +106,7 @@ export function Header({ selectedSport, onSportChange }: HeaderProps) {
               <span>History</span>
             </Link>
 
-            <Button
-              size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2 hidden lg:inline-flex"
-            >
-              <LogIn size={16} />
-              <span>Sign In</span>
-            </Button>
+            <WalletConnectButton />
 
             {/* Mobile Menu Button */}
             <button 
@@ -183,12 +178,9 @@ export function Header({ selectedSport, onSportChange }: HeaderProps) {
                 <BarChart3 size={16} className="text-accent" />
                 <span>History</span>
               </Link>
-              <Button
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2 mt-2"
-              >
-                <LogIn size={16} />
-                <span>Sign In</span>
-              </Button>
+              <div className="pt-2">
+                <WalletConnectButton />
+              </div>
             </div>
           </div>
         )}
