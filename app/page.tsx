@@ -99,12 +99,53 @@ export default function Home() {
       {selectedMatch && (
         <DeepDiveModal
           match={selectedMatch}
-          onClose={() => {
-            // Show modal with option to add to watchlist
-            toggleWatchlist(selectedMatch);
-            setSelectedMatch(null);
-          }}
+          onClose={() => setSelectedMatch(null)}
+          onAddToWatchlist={() => toggleWatchlist(selectedMatch)}
         />
+      )}
+
+      {/* Floating Watchlist / My Picks Panel */}
+      {watchlistMatches.length > 0 && (
+        <div className="fixed bottom-4 right-4 z-40 w-80 bg-card border border-primary/30 rounded-xl shadow-2xl shadow-primary/20 overflow-hidden flex flex-col">
+          <div className="bg-primary/10 border-b border-primary/20 p-3 flex justify-between items-center">
+            <h3 className="font-bold text-foreground text-sm">My Analyzed Picks</h3>
+            <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
+              {watchlistMatches.length}
+            </span>
+          </div>
+          
+          <div className="max-h-60 overflow-y-auto p-2 space-y-2">
+            {watchlistMatches.map(match => (
+              <div key={match.id} className="flex items-center justify-between bg-background border border-primary/10 p-2 rounded-lg text-xs">
+                <div className="flex-1 truncate pr-2">
+                  <p className="font-semibold text-foreground truncate">{match.homeTeam} vs {match.awayTeam}</p>
+                  <p className="text-muted-foreground mt-0.5">Odds: <span className="text-primary font-bold">{match.odds.toFixed(2)}</span></p>
+                </div>
+                <button 
+                  onClick={() => removeFromWatchlist(match.id)}
+                  className="text-muted-foreground hover:text-destructive transition-colors p-1"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-background border-t border-primary/20 p-3 space-y-3">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-muted-foreground font-medium">Total Odds:</span>
+              <span className="text-primary font-black text-lg">
+                {watchlistMatches.reduce((a, m) => a * m.odds, 1).toFixed(2)}
+              </span>
+            </div>
+            <button
+              onClick={handleShare}
+              className="w-full bg-primary text-primary-foreground font-bold py-2 rounded-lg hover:bg-primary/90 transition-colors"
+            >
+              Export Picks
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

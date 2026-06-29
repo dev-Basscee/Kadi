@@ -16,11 +16,10 @@ import { useDeepDive } from '@/lib/api';
 interface DeepDiveModalProps {
   match: Match | null;
   onClose: () => void;
+  onAddToWatchlist?: () => void;
 }
 
-export function DeepDiveModal({ match, onClose }: DeepDiveModalProps) {
-  const [showWatchlist, setShowWatchlist] = useState(false);
-  
+export function DeepDiveModal({ match, onClose, onAddToWatchlist }: DeepDiveModalProps) {
   const { data: deepDiveData, isLoading } = useDeepDive(match?.id);
 
   if (!match) return null;
@@ -232,7 +231,7 @@ export function DeepDiveModal({ match, onClose }: DeepDiveModalProps) {
               <Button
                 className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
                 onClick={() => {
-                  setShowWatchlist(true);
+                  onAddToWatchlist?.();
                   onClose();
                 }}
               >
