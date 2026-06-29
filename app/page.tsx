@@ -6,20 +6,17 @@ import { MatchCard } from '@/components/MatchCard';
 import { DeepDiveModal } from '@/components/DeepDiveModal';
 import { AdBanner } from '@/components/AdBanner';
 import { LiveScoreTicker } from '@/components/LiveScoreTicker';
-import { mockMatches, Match } from '@/lib/mockData';
+import { Match } from '@/lib/mockData';
+import { useMatches } from '@/lib/api';
 
 export default function Home() {
   const [selectedSport, setSelectedSport] = useState('all');
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [watchlistMatches, setWatchlistMatches] = useState<Match[]>([]);
 
-  // Filter matches by sport
-  const filteredMatches = useMemo(() => {
-    if (selectedSport === 'all') {
-      return mockMatches;
-    }
-    return mockMatches.filter((m) => m.sport === selectedSport);
-  }, [selectedSport]);
+  // Fetch matches from Go backend (falls back to mockData automatically if API fails)
+  const { data: matches, isLoading } = useMatches(selectedSport);
+  const filteredMatches = matches || [];
 
   // Toggle watchlist
   const toggleWatchlist = (match: Match) => {
@@ -50,17 +47,22 @@ export default function Home() {
 
       <main className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8">
         {/* Live Score Ticker */}
-        <LiveScoreTicker matches={mockMatches} />
+        {matches && matches.length > 0 && <LiveScoreTicker matches={matches} />}
         
         <div className="space-y-6 sm:space-y-8">
             {/* Section Title */}
-            <div className="mb-6 sm:mb-8">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
-                Today&apos;s Predictions
-              </h1>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                {filteredMatches.length} matches with AI-powered predictions
-              </p>
+            <div className="mb-6 sm:mb-8 flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2">
+                  Today&apos;s Predictions
+                </h1>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  {isLoading ? 'Loading matches...' : `${filteredMatches.length} matches with AI-powered predictions`}
+                </p>
+              </div>
+              {isLoading && (
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+              )}
             </div>
 
           {/* Matches Grid - Responsive across all screen sizes */}

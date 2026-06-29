@@ -1,13 +1,14 @@
 'use client';
 
 import { Match } from '@/lib/mockData';
-import { Lock, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { Lock, TrendingUp, CheckCircle2, Activity } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface MatchCardProps {
   match: Match;
   onClick: () => void;
   isPremium?: boolean;
+  onSelectOdds?: (selection: 'home' | 'draw' | 'away', odds: number) => void;
 }
 
 const predictionBadgeConfig: Record<string, { bg: string; text: string; label: string }> = {
@@ -18,9 +19,51 @@ const predictionBadgeConfig: Record<string, { bg: string; text: string; label: s
   red: { bg: 'bg-red-500/20', text: 'text-red-400', label: 'LOSS' },
 };
 
-export function MatchCard({ match, onClick, isPremium }: MatchCardProps) {
+function OddsButton({
+  label,
+  value,
+  highlight,
+  onClick,
+}: {
+  label: string;
+  value: number;
+  highlight?: boolean;
+  onClick?: () => void;
+}) {
+  if (!value) return null;
+  return (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.();
+      }}
+      className={`flex-1 flex flex-col items-center gap-0.5 py-1.5 px-1 rounded-lg border transition-all
+        ${
+          highlight
+            ? 'bg-primary/20 border-primary/60 hover:bg-primary/30'
+            : 'bg-card/60 border-primary/20 hover:bg-primary/10 hover:border-primary/40'
+        }`}
+    >
+      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{label}</span>
+      <span className={`text-xs font-bold ${highlight ? 'text-primary' : 'text-accent'}`}>
+        {value.toFixed(2)}
+      </span>
+    </button>
+  );
+}
+
+export function MatchCard({ match, onClick, isPremium, onSelectOdds }: MatchCardProps) {
   const badge = predictionBadgeConfig[match.prediction.color];
   const isBlurred = isPremium && match.isPremium;
+  const isLive = match.status === 'live';
+
+  // Determine which odds button to highlight based on AI prediction
+  const predHighlight: Record<string, 'home' | 'draw' | 'away'> = {
+    win: 'home',
+    draw: 'draw',
+    loss: 'away',
+  };
+  const highlighted = predHighlight[match.prediction.result];
 
   return (
     <div
@@ -43,15 +86,27 @@ export function MatchCard({ match, onClick, isPremium }: MatchCardProps) {
         </div>
       )}
 
-      {/* Top Row - Date/Time & Odds */}
+      {/* Top Row - Date/Time & Live badge */}
       <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
           <span className="font-mono text-muted-foreground">
             {format(match.date, 'MMM dd')}
           </span>
           <span className="font-mono text-secondary font-semibold">{match.time}</span>
+          {match.league && (
+            <span className="hidden sm:inline text-[10px] text-muted-foreground/70 truncate max-w-[80px]">
+              · {match.league}
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          {/* LIVE Badge */}
+          {isLive && (
+            <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-red-500/20 border border-red-500/40 animate-pulse">
+              <Activity size={10} className="text-red-400" />
+              <span className="text-[10px] font-bold text-red-400">LIVE</span>
+            </span>
+          )}
           {/* Verified on Solana Badge for finished matches */}
           {match.status === 'finished' && (
             <div className="flex items-center gap-0.5 px-2 py-1 rounded-full bg-primary/10 border border-primary/30 group/verified cursor-pointer hover:bg-primary/20 transition-colors">
@@ -60,12 +115,14 @@ export function MatchCard({ match, onClick, isPremium }: MatchCardProps) {
             </div>
           )}
           <TrendingUp size={12} className="text-accent sm:w-4 sm:h-4" />
-          <span className="text-xs sm:text-sm font-bold text-accent">{match.odds.toFixed(2)}</span>
+          <span className="text-xs sm:text-sm font-bold text-accent">
+            {match.oddsHome?.toFixed(2) ?? match.odds.toFixed(2)}
+          </span>
         </div>
       </div>
 
       {/* Teams */}
-      <div className="space-y-2 mb-4">
+      <div className="space-y-2 mb-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
@@ -77,7 +134,12 @@ export function MatchCard({ match, onClick, isPremium }: MatchCardProps) {
               {match.homeTeam}
             </span>
           </div>
-          <span className="text-xs text-muted-foreground flex-shrink-0">H</span>
+          {/* Live Score or 'H' label */}
+          {isLive && match.homeScore != null ? (
+            <span className="text-sm font-bold text-foreground flex-shrink-0">{match.homeScore}</span>
+          ) : (
+            <span className="text-xs text-muted-foreground flex-shrink-0">H</span>
+          )}
         </div>
         <div className="border-b border-primary/10" />
         <div className="flex items-center justify-between gap-2">
@@ -91,9 +153,47 @@ export function MatchCard({ match, onClick, isPremium }: MatchCardProps) {
               {match.awayTeam}
             </span>
           </div>
-          <span className="text-xs text-muted-foreground flex-shrink-0">A</span>
+          {isLive && match.awayScore != null ? (
+            <span className="text-sm font-bold text-foreground flex-shrink-0">{match.awayScore}</span>
+          ) : (
+            <span className="text-xs text-muted-foreground flex-shrink-0">A</span>
+          )}
         </div>
       </div>
+
+      {/* Live Minute */}
+      {isLive && match.minute != null && (
+        <div className="flex items-center gap-1 mb-2">
+          <span className="text-[10px] text-red-400 font-bold">{match.minute}&apos;</span>
+          <div className="flex-1 h-px bg-red-500/20" />
+        </div>
+      )}
+
+      {/* H / D / A Odds Row */}
+      {(match.oddsHome || match.oddsDraw || match.oddsAway) ? (
+        <div className="flex gap-1.5 mb-3" onClick={(e) => e.stopPropagation()}>
+          <OddsButton
+            label="1"
+            value={match.oddsHome}
+            highlight={highlighted === 'home'}
+            onClick={() => onSelectOdds?.('home', match.oddsHome)}
+          />
+          {match.oddsDraw > 0 && (
+            <OddsButton
+              label="X"
+              value={match.oddsDraw}
+              highlight={highlighted === 'draw'}
+              onClick={() => onSelectOdds?.('draw', match.oddsDraw)}
+            />
+          )}
+          <OddsButton
+            label="2"
+            value={match.oddsAway}
+            highlight={highlighted === 'away'}
+            onClick={() => onSelectOdds?.('away', match.oddsAway)}
+          />
+        </div>
+      ) : null}
 
       {/* Prediction Badge */}
       <div

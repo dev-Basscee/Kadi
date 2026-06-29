@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ChevronDown, Calendar, LogIn, Menu, X, BarChart3, TrendingUp, Zap, Users } from 'lucide-react';
@@ -185,12 +185,9 @@ export function Header({ selectedSport, onSportChange }: HeaderProps) {
                 <BarChart3 size={16} className="text-accent" />
                 <span>History</span>
               </Link>
-              <Button
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2 mt-2"
-              >
-                <LogIn size={16} />
-                <span>Sign In</span>
-              </Button>
+              <div className="pt-2">
+                <WalletConnectButton />
+              </div>
             </div>
           </div>
         )}

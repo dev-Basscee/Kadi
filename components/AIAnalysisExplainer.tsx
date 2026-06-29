@@ -5,9 +5,10 @@ import { Brain, TrendingUp, Shield, AlertCircle, CheckCircle2 } from 'lucide-rea
 
 interface AIAnalysisExplainerProps {
   match: Match;
+  analysis?: any;
 }
 
-export function AIAnalysisExplainer({ match }: AIAnalysisExplainerProps) {
+export function AIAnalysisExplainer({ match, analysis }: AIAnalysisExplainerProps) {
   const factors = [
     {
       category: 'Team Form',
@@ -35,38 +36,28 @@ export function AIAnalysisExplainer({ match }: AIAnalysisExplainerProps) {
     },
   ];
 
-  const confidenceReasons = [
-    {
-      reason: 'Strong recent form of home team',
-      weight: '35%',
-      icon: CheckCircle2,
-      color: 'text-primary',
-    },
-    {
-      reason: 'Favorable head-to-head history',
-      weight: '25%',
-      icon: CheckCircle2,
-      color: 'text-primary',
-    },
-    {
-      reason: 'Statistical advantage in key metrics',
-      weight: '20%',
-      icon: CheckCircle2,
-      color: 'text-primary',
-    },
-    {
-      reason: 'Home field advantage',
-      weight: '15%',
-      icon: CheckCircle2,
-      color: 'text-primary',
-    },
-    {
-      reason: 'Opposition form dip',
-      weight: '5%',
-      icon: AlertCircle,
-      color: 'text-accent',
-    },
-  ];
+  // Map Gemini key_factors to confidenceReasons if available
+  const confidenceReasons = analysis && analysis.key_factors && analysis.key_factors.length > 0
+    ? analysis.key_factors.map((factor: string, idx: number) => ({
+        reason: factor,
+        weight: idx === 0 ? 'High' : 'Medium',
+        icon: CheckCircle2,
+        color: 'text-primary',
+      }))
+    : [
+        {
+          reason: 'Strong recent form of home team',
+          weight: 'High',
+          icon: CheckCircle2,
+          color: 'text-primary',
+        },
+        {
+          reason: 'Favorable head-to-head history',
+          weight: 'Medium',
+          icon: CheckCircle2,
+          color: 'text-primary',
+        },
+      ];
 
   return (
     <div className="space-y-6 mt-6">
@@ -78,9 +69,16 @@ export function AIAnalysisExplainer({ match }: AIAnalysisExplainerProps) {
           </div>
           <div>
             <h3 className="text-lg font-bold text-foreground">AI Analysis</h3>
-            <p className="text-sm text-muted-foreground">Machine learning model powered by 50,000+ historical matches</p>
+            <p className="text-sm text-muted-foreground">
+              {analysis?.model_used === 'gemini-3.1-pro-preview' 
+                ? 'Gemini 3.1 Pro (Premium)' 
+                : 'Powered by Gemini 1.5 Flash'}
+            </p>
           </div>
         </div>
+        {analysis?.summary && (
+          <p className="text-sm text-foreground mt-3 italic">&ldquo;{analysis.summary}&rdquo;</p>
+        )}
       </div>
 
       {/* Key Factors Grid */}
@@ -114,7 +112,7 @@ export function AIAnalysisExplainer({ match }: AIAnalysisExplainerProps) {
       {/* Confidence Breakdown */}
       <div className="space-y-4">
         <h4 className="text-sm font-bold text-foreground uppercase tracking-wider">
-          Confidence Breakdown: {match.prediction.confidence}%
+          Prediction: <span className="text-primary">{analysis?.verdict || match.prediction.verdict}</span> ({analysis?.confidence || match.prediction.confidence}%)
         </h4>
         <div className="space-y-2">
           {confidenceReasons.map((reason, idx) => {
@@ -141,8 +139,16 @@ export function AIAnalysisExplainer({ match }: AIAnalysisExplainerProps) {
           Risk Assessment
         </h4>
         <div className="space-y-2 text-sm text-muted-foreground">
-          <p>This prediction is based on statistical analysis of team form, historical performance, and recent trends. However, unforeseen factors such as injuries, weather conditions, or tactical changes may impact the outcome.</p>
-          <p className="text-xs text-accent">Predicted Accuracy: 78% (Based on historical model performance)</p>
+          {analysis && analysis.risks && analysis.risks.length > 0 ? (
+            <ul className="list-disc pl-4 space-y-1">
+              {analysis.risks.map((risk: string, i: number) => (
+                <li key={i}>{risk}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>This prediction is based on statistical analysis of team form, historical performance, and recent trends. Unforeseen factors may impact the outcome.</p>
+          )}
+          <p className="text-xs text-accent mt-2">Predicted Accuracy: {analysis?.confidence || 78}% (Based on model confidence)</p>
         </div>
       </div>
     </div>
