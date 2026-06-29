@@ -71,30 +71,51 @@ export function LiveScoreTicker({ matches }: LiveScoreTickerProps) {
 
         {/* Match Info */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 justify-center flex-wrap">
+          {/* Mobile: Stacked layout */}
+          <div className="flex md:hidden flex-col items-center justify-center gap-2">
             {/* Home Team */}
-            <div className="text-right truncate">
-              <p className="text-sm font-bold text-foreground">{currentMatch.homeTeam}</p>
-              <p className="text-xs text-muted-foreground">{currentMatch.league}</p>
+            <div className="text-center w-full">
+              <p className="text-xs font-bold text-foreground line-clamp-1">{currentMatch.homeTeam}</p>
             </div>
 
             {/* Score */}
-            <div className="px-4 py-2 bg-card border border-primary/30 rounded-lg">
+            <div className="px-3 py-1 bg-card border border-primary/30 rounded">
+              <p className="text-base font-black text-primary text-center">
+                {currentMatch.homeScore} - {currentMatch.awayScore}
+              </p>
+            </div>
+
+            {/* Away Team */}
+            <div className="text-center w-full">
+              <p className="text-xs font-bold text-foreground line-clamp-1">{currentMatch.awayTeam}</p>
+            </div>
+          </div>
+
+          {/* Desktop: Horizontal layout */}
+          <div className="hidden md:flex items-center gap-2 justify-center">
+            {/* Home Team */}
+            <div className="text-right min-w-0 flex-1">
+              <p className="text-sm font-bold text-foreground truncate">{currentMatch.homeTeam}</p>
+              <p className="text-xs text-muted-foreground truncate">{currentMatch.league}</p>
+            </div>
+
+            {/* Score */}
+            <div className="px-4 py-2 bg-card border border-primary/30 rounded-lg flex-shrink-0">
               <p className="text-lg font-black text-primary text-center">
                 {currentMatch.homeScore} - {currentMatch.awayScore}
               </p>
             </div>
 
             {/* Away Team */}
-            <div className="text-left truncate">
-              <p className="text-sm font-bold text-foreground">{currentMatch.awayTeam}</p>
+            <div className="text-left min-w-0 flex-1">
+              <p className="text-sm font-bold text-foreground truncate">{currentMatch.awayTeam}</p>
               <p className="text-xs text-muted-foreground">vs</p>
             </div>
           </div>
         </div>
 
-        {/* Controls */}
-        <div className="flex items-center gap-2 min-w-fit">
+        {/* Controls - Hidden on mobile to save space */}
+        <div className="hidden sm:flex items-center gap-2 min-w-fit">
           <button
             onClick={handlePrev}
             className="p-2 hover:bg-primary/20 rounded-lg transition-colors"
@@ -103,8 +124,8 @@ export function LiveScoreTicker({ matches }: LiveScoreTickerProps) {
             <ChevronLeft className="w-4 h-4 text-primary" />
           </button>
 
-          {/* Dot Indicators */}
-          <div className="flex gap-1">
+          {/* Dot Indicators - Hide on very small screens */}
+          <div className="hidden md:flex gap-1">
             {liveMatches.map((_, idx) => (
               <button
                 key={idx}

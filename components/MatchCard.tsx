@@ -1,7 +1,7 @@
 'use client';
 
 import { Match } from '@/lib/mockData';
-import { Lock, TrendingUp, Activity } from 'lucide-react';
+import { Lock, TrendingUp, CheckCircle2, Activity } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface MatchCardProps {
@@ -87,28 +87,31 @@ export function MatchCard({ match, onClick, isPremium, onSelectOdds }: MatchCard
       )}
 
       {/* Top Row - Date/Time & Live badge */}
-      <div className="flex items-center justify-between gap-2 mb-3">
-        <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-          <span className="font-mono text-muted-foreground">
-            {format(match.date, 'MMM dd')}
+      <div className="flex items-center justify-between gap-1 mb-3 min-w-0">
+        <div className="flex items-center gap-1 text-xs sm:text-sm min-w-0">
+          <span className="font-mono text-muted-foreground whitespace-nowrap">
+            {format(match.date, 'MMM d')}
           </span>
-          <span className="font-mono text-secondary font-semibold">{match.time}</span>
+          <span className="font-mono text-secondary font-semibold whitespace-nowrap">{match.time}</span>
           {match.league && (
-            <span className="hidden sm:inline text-[10px] text-muted-foreground/70 truncate max-w-[80px]">
+            <span className="hidden sm:inline text-[10px] text-muted-foreground/70 truncate max-w-[70px]">
               · {match.league}
             </span>
           )}
         </div>
-        <div className="flex items-center gap-1.5 flex-shrink-0">
+        <div className="flex items-center gap-0.5 sm:gap-1.5 flex-shrink-0">
+          {/* LIVE Badge */}
           {isLive && (
             <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-red-500/20 border border-red-500/40 animate-pulse">
               <Activity size={10} className="text-red-400" />
               <span className="text-[10px] font-bold text-red-400">LIVE</span>
             </span>
           )}
+          {/* Verified on Solana Badge for finished matches */}
           {match.status === 'finished' && (
-            <div className="hidden sm:flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary/20 border border-secondary/30">
-              <span className="text-[10px] font-bold text-secondary">Verified on Solana</span>
+            <div className="flex items-center gap-0.5 px-2 py-1 rounded-full bg-primary/10 border border-primary/30 group/verified cursor-pointer hover:bg-primary/20 transition-colors">
+              <CheckCircle2 size={12} className="text-primary" />
+              <span className="text-xs font-semibold text-primary hidden sm:inline">Verified</span>
             </div>
           )}
           <TrendingUp size={12} className="text-accent sm:w-4 sm:h-4" />
@@ -120,40 +123,40 @@ export function MatchCard({ match, onClick, isPremium, onSelectOdds }: MatchCard
 
       {/* Teams */}
       <div className="space-y-2 mb-3">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+        <div className="flex items-center justify-between gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
               <span className="text-xs font-bold text-primary">
                 {match.homeTeam.charAt(0)}
               </span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
+            <span className="text-xs sm:text-sm font-semibold text-foreground line-clamp-1">
               {match.homeTeam}
             </span>
           </div>
           {/* Live Score or 'H' label */}
           {isLive && match.homeScore != null ? (
-            <span className="text-sm font-bold text-foreground flex-shrink-0">{match.homeScore}</span>
+            <span className="text-xs sm:text-sm font-bold text-foreground flex-shrink-0 whitespace-nowrap">{match.homeScore}</span>
           ) : (
-            <span className="text-xs text-muted-foreground flex-shrink-0">H</span>
+            <span className="text-xs text-muted-foreground flex-shrink-0 whitespace-nowrap">H</span>
           )}
         </div>
         <div className="border-b border-primary/10" />
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary/20 flex items-center justify-center flex-shrink-0">
+        <div className="flex items-center justify-between gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-secondary/20 flex items-center justify-center flex-shrink-0">
               <span className="text-xs font-bold text-secondary">
                 {match.awayTeam.charAt(0)}
               </span>
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
+            <span className="text-xs sm:text-sm font-semibold text-foreground line-clamp-1">
               {match.awayTeam}
             </span>
           </div>
           {isLive && match.awayScore != null ? (
-            <span className="text-sm font-bold text-foreground flex-shrink-0">{match.awayScore}</span>
+            <span className="text-xs sm:text-sm font-bold text-foreground flex-shrink-0 whitespace-nowrap">{match.awayScore}</span>
           ) : (
-            <span className="text-xs text-muted-foreground flex-shrink-0">A</span>
+            <span className="text-xs text-muted-foreground flex-shrink-0 whitespace-nowrap">A</span>
           )}
         </div>
       </div>
