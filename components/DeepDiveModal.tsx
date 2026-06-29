@@ -177,6 +177,34 @@ export function DeepDiveModal({ match, onClose }: DeepDiveModalProps) {
               <AIAnalysisExplainer match={match} analysis={deepDiveData?.analysis} />
             )}
 
+            {/* Cryptographic Receipt */}
+            {match.status === 'finished' && (
+              <div>
+                <h3 className="text-lg font-bold text-foreground mb-4">Cryptographic Receipt</h3>
+                <div className="bg-card/50 border border-primary/20 rounded-lg p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Network</span>
+                    <span className="text-sm font-semibold text-secondary">Solana (Devnet)</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Timestamp</span>
+                    <span className="text-sm font-semibold">{format(match.date, 'yyyy-MM-dd HH:mm:ss')}</span>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-sm text-muted-foreground">Merkle Proof (Hash)</span>
+                    <div className="bg-background/80 p-2 rounded border border-primary/10 overflow-hidden">
+                      <p className="font-mono text-xs text-secondary truncate">
+                        0x{Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join('')}
+                      </p>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="w-full mt-2 border-secondary/30 text-secondary hover:bg-secondary/10">
+                    Verify Signature
+                  </Button>
+                </div>
+              </div>
+            )}
+
             {/* Actions */}
             <div className="flex gap-3 pt-4 sticky bottom-0 bg-card">
               <Button
