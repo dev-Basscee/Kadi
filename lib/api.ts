@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Match, BetRecord } from './mockData';
 
-const API_BASE = 'http://localhost:8080/api/v1';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080/api/v1';
 
 // We fallback to mock data if the API fails or is empty, to ensure the UI still renders during testing
 import { mockMatches } from './mockData';
