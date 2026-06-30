@@ -37,7 +37,7 @@ export function AIAnalysisExplainer({ match, analysis }: AIAnalysisExplainerProp
   ];
 
   // Map Gemini key_factors to confidenceReasons if available
-  const confidenceReasons = analysis && analysis.key_factors && analysis.key_factors.length > 0
+  const confidenceReasons: { reason: string; weight: string; icon: any; color: string }[] = analysis && analysis.key_factors && analysis.key_factors.length > 0
     ? analysis.key_factors.map((factor: string, idx: number) => ({
         reason: factor,
         weight: idx === 0 ? 'High' : 'Medium',
@@ -112,7 +112,7 @@ export function AIAnalysisExplainer({ match, analysis }: AIAnalysisExplainerProp
       {/* Confidence Breakdown */}
       <div className="space-y-4">
         <h4 className="text-sm font-bold text-foreground uppercase tracking-wider">
-          Prediction: <span className="text-primary">{analysis?.verdict || match.prediction.verdict}</span> ({analysis?.confidence || match.prediction.confidence}%)
+          Prediction: <span className="text-primary">{analysis?.verdict || match.prediction.result}</span> ({analysis?.confidence || match.prediction.confidence}%)
         </h4>
         <div className="space-y-2">
           {confidenceReasons.map((reason, idx) => {
