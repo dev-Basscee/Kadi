@@ -19,7 +19,6 @@ export function WalletConnectButton() {
       )}
       <WalletMultiButton 
         className="!bg-primary !hover:bg-primary/90 !text-primary-foreground !h-9 !px-3 !rounded-md !text-sm !font-medium"
-        suppressHydrationWarning 
       />
     </div>
   );

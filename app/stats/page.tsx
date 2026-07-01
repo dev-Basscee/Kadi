@@ -76,7 +76,7 @@ export default function StatsPage() {
                 <YAxis stroke="#666" />
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #00ff88', borderRadius: '8px' }}
-                  formatter={(value) => value.toFixed(2)}
+                  formatter={(value: any) => Number(value).toFixed(2)}
                 />
                 <Legend />
                 <Bar dataKey="xG" fill="#00ff88" name="Expected Goals" />
@@ -128,7 +128,7 @@ export default function StatsPage() {
                 <Tooltip 
                   cursor={{ strokeDasharray: '3 3' }}
                   contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #00ff88', borderRadius: '8px' }}
-                  formatter={(value, name) => {
+                  formatter={(value: any, name) => {
                     if (name === 'xG') return value.toFixed(2);
                     return value;
                   }}

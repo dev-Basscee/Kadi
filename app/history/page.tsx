@@ -28,8 +28,8 @@ export default function HistoryPage() {
     const totalStaked = mockBettingHistory.reduce((sum, b) => sum + b.stakeAmount, 0);
     const totalReturned = mockBettingHistory.reduce((sum, b) => sum + (b.returnAmount || 0), 0);
     const totalProfit = mockBettingHistory.reduce((sum, b) => sum + (b.profit || 0), 0);
-    const winRate = totalBets > 0 ? ((wins / totalBets) * 100).toFixed(1) : 0;
-    const roi = totalStaked > 0 ? (((totalProfit / totalStaked) * 100).toFixed(1)) : 0;
+    const winRate = totalBets > 0 ? Number(((wins / totalBets) * 100).toFixed(1)) : 0;
+    const roi = totalStaked > 0 ? Number(((totalProfit / totalStaked) * 100).toFixed(1)) : 0;
 
     return {
       totalBets,
