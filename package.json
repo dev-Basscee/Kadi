@@ -46,18 +46,5 @@
   },
   "overrides": {
     "hono": "4.12.25"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@stellar/stellar-sdk",
-      "blake-hash",
-      "bufferutil",
-      "msw",
-      "protobufjs",
-      "sharp",
-      "tiny-secp256k1",
-      "usb",
-      "utf-8-validate"
-    ]
   }
 }
